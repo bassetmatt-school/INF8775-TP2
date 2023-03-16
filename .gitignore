@@ -1,5 +1,9 @@
 .vscode
 
+# Cpp
+bin
+[bB]uild
+
 data
 *.docx
 
