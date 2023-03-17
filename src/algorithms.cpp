@@ -41,4 +41,9 @@ namespace algos {
         result.push_back(dist);
         return result;
     }
+
+    std::vector<int> dynamicProgTSP(std::vector<Point> p_list) {
+
+        return std::vector<int>(0);
+    }
 }

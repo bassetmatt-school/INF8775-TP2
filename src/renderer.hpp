@@ -2,7 +2,7 @@
 #define TP2_RENDERER_H
 
 #include <SDL2/SDL.h>
-#include "point.hpp"
+#include "structures.hpp"
 
 namespace renderer {
 	int const window_h = 1000;

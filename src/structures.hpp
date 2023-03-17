@@ -25,4 +25,23 @@ using Vec2 = Point;
 
 int distance(Point const p1, Point const p2);
 
+
+class OptimalSet {
+public:
+	uint32_t elements;
+
+	bool isInSet(int i) const;
+	void toggleFromSet(int i);
+	int countElements() const;
+};
+
+class PartialPath {
+public:
+	uint8_t start_point;
+	OptimalSet point_set;
+	uint8_t point_count;
+};
+
+using DistTable = std::vector<PartialPath>;
+
 #endif /* TP2_POINT_H */

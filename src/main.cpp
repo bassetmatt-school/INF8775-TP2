@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
-#include "point.hpp"
+#include "structures.hpp"
 #include "renderer.hpp"
 #include "algorithms.hpp"
 
