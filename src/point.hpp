@@ -23,4 +23,6 @@ public:
 // Point operator*(int const k, Point const p2) {return Point(k * p2.x, k * p2.y);}
 using Vec2 = Point;
 
+int distance(Point const p1, Point const p2);
+
 #endif /* TP2_POINT_H */
