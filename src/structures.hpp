@@ -51,5 +51,15 @@ using TableIndex = std::pair<Path, int>;
 /* Prim Structures */
 using edge = std::pair<uint, uint>;
 
+struct Node {
+	uint index;
+	std::vector<Node*> children;
+	Node(uint idx, std::vector<Node*> children);
+};
+
+
+void build_tree(std::vector<edge> const& edges, Node& tree);
+
+using id_node = std::pair<uint, Node*>;
 
 #endif /* TP2_STRUCTURES_H */

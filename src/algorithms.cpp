@@ -134,7 +134,7 @@ namespace algos {
                     k = j;
                 }
             }
-            edges.push_back(edge(k, nearest_neighbor[k]));
+            edges.push_back(edge(nearest_neighbor[k], k));
             min_dist[k] = -1;
             for (int j = 1; j < N_cities; ++j) {
                 int d = distance(p_list[k], p_list[j]);
@@ -147,13 +147,22 @@ namespace algos {
         return edges;
     }
 
-    std::vector<int> approximative_TSP(std::vector<Point> p_list) {
-        std::vector<edge> edges;
-        edges = prim_algo(p_list);
-        int i = 0;
-        for (edge e: edges) {
-            printf("Edge %d, (%d - %d)\n", ++i, e.first, e.second);
+    void DFS_pre_order(Node const* tree, std::vector<int>& order) {
+        order.push_back(tree->index);
+        for (Node* child : tree->children) {
+            DFS_pre_order(child, order);
         }
-        return std::vector<int>(0);
+    }
+
+    std::vector<int> approximative_TSP(std::vector<Point> p_list) {
+        std::vector<edge> edges = prim_algo(p_list);
+
+        Node tree(0, std::vector<Node*>());
+        build_tree(edges, tree);
+
+        std::vector<int> order;
+        DFS_pre_order(&tree, order);
+        order.push_back(0);
+        return order;
     }
 }

@@ -10,9 +10,9 @@
 #include "algorithms.hpp"
 
 #define USE_GREEDY
-// #define USE_DP
+#define USE_DP
 #define USE_APPROX
-#define RENDERING
+// #define RENDERING
 
 int load_file(std::string const& filename, std::vector<Point>& p_list){
 	std::ifstream file_stream(filename);
@@ -94,7 +94,13 @@ int main (){
 #endif // USE_DP
 
 #ifdef USE_APPROX
-	algos::approximative_TSP(p_list);
+	order = algos::approximative_TSP(p_list);
+	// for (int x : order) {printf("%d|", x);}
+	// printf("\n");
+	dist = 0;
+	for (int i = 0; i < N_cities; ++i)
+		dist += distance(p_list[order[i]], p_list[order[i+1]]);
+	std::cout << "Distance = " << dist << std::endl;
 #endif // USE_APPROX
 	return 0;
 }

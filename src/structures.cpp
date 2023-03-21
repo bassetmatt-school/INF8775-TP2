@@ -47,3 +47,22 @@ Path path_from_point(uint8_t pt) {
 Path constr(uint8_t pt, uint32_t set) {
 	return set + ((uint64_t) pt << 32);
 }
+
+Node::Node(uint idx, std::vector<Node*> children){
+	this->index = idx;
+	this->children = children;
+}
+
+void build_tree(std::vector<edge> const& edges, Node& tree) {
+	std::map<int, Node*> already_added;
+
+	id_node first_node(0, &tree);
+	already_added.insert(first_node);
+	for (edge e : edges) {
+		Node* new_node = new Node(e.second, std::vector<Node*>());
+		id_node new_entry(e.second, new_node);
+		already_added.insert(new_entry);
+		if (already_added.contains(e.first))
+			already_added.at(e.first)->children.push_back(new_node);
+	}
+}
