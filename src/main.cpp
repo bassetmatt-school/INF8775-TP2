@@ -9,11 +9,11 @@
 #include "renderer.hpp"
 #include "algorithms.hpp"
 
-void load_file(std::string const& filename, std::vector<Point>& p_list){
+int load_file(std::string const& filename, std::vector<Point>& p_list){
 	std::ifstream file_stream(filename);
 	if (!file_stream.is_open()) {
 		std::cout << "Couldn't open file\n";
-		return;
+		return -1;
 	}
 
 	int N;
@@ -26,24 +26,51 @@ void load_file(std::string const& filename, std::vector<Point>& p_list){
 	}
 	p_list.pop_back();
 	file_stream.close();
+	return N;
 }
 
 int main (){
 	std::vector<Point> p_list;
+	int N_cities;
 	/* File loading */
-	std::string file("../data/N10000_0");
+	std::string file("../data/DP_N15_0");
 	std::cout << "Loading file " << file << std::endl;
-	load_file(file, p_list);
+	N_cities = load_file(file, p_list);
 	std::cout << "File loaded" << std::endl;
+	// renderer::init();
 
 	/* Greedy TSP Application */
 	std::vector<int> order;
-	order = algos::greedyTSP(p_list);
-	int dist = order[order.size()-1];
-	order.pop_back();
-	std::cout << "Distance = " << dist << std::endl;
+	order = algos::greedy_TSP(p_list);
+	// for (int x : order) {printf("%d|", x);}
+	// printf("\n");
+	int dist = 0;
+	for (int i = 0; i < N_cities; ++i)
+		dist += distance(p_list[order[i]], p_list[order[i+1]]);
 
-	renderer::init();
-	renderer::displayTSP(p_list, order);
+	// for (int i = 0; i < order.size() - 1; ++i) {
+	// 	int p1 = order[i];
+	// 	int p2 = order[i+1];
+	// 	int d = distance(p_list[p1], p_list[p2]);
+	// 	dist += d;
+	// 	printf("Distance %d-%d : %d\n", p1, p2, d);
+	// }
+	std::cout << "Distance = " << dist << std::endl;
+	// renderer::displayTSP(p_list, order);
+
+	/* Dynamic programming application */
+	order = algos::dynamic_prog_TSP(p_list);
+	dist = order[order.size()-1];
+	order.pop_back();
+	// for (int x : order) {printf("%d|", x);}
+	// printf("\n");
+	// 	for (int i = 0; i < order.size() - 1; ++i) {
+	// 	int p1 = order[i];
+	// 	int p2 = order[i+1];
+	// 	int d = distance(p_list[p1], p_list[p2]);
+	// 	printf("Distance %d-%d : %d\n", p1, p2, d);
+	// }
+	std::cout << "Distance = " << dist << std::endl;
+	// renderer::displayTSP(p_list, order);
 	return 0;
 }

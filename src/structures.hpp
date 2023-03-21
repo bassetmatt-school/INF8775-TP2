@@ -1,7 +1,11 @@
-#ifndef TP2_POINT_H
-#define TP2_POINT_H
+#ifndef TP2_STRUCTURES_H
+#define TP2_STRUCTURES_H
 
 #include <iostream>
+#include <map>
+#include <vector>
+
+#define empty(s) (s.elements == 0)
 
 class Point {
 public:
@@ -9,15 +13,18 @@ public:
 	Point() {this->x = 0; this->y = 0;}
 	Point(int x, int y) { this->x = x; this->y = y;}
 	Point copy() {return Point(this->x, this->y);}
+
 	Point operator+(Point const p2) const {return Point(this->x + p2.x, this->y + p2.y);}
 	Point operator-(Point const p2) const {return Point(this->x - p2.x, this->y - p2.y);}
+	Point operator*(int          k) const {return Point(this->x * k   , this->y * k   );}
+	Point operator/(int          k) const {return Point(this->x / k   , this->y / k   );}
 	Point operator-() const {return Point(-this->x, -this->y);}
-	Point operator*(int const k) const {return Point(this->x * k, this->y * k);}
-	Point operator/(int const k) const {return Point(this->x / k, this->y / k);}
+
 	Point& operator+=(Point const p2) {this->x += p2.x; this->y += p2.y; return *this;}
-	Point& operator*=(int const k) {this->x *= k; this->y *= k; return *this;}
-	Point& operator/=(int const k) {this->x /= k; this->y /= k; return *this;}
-	void pr() {printf("(%d, %d)\n", this->x, this->y);}
+	Point& operator-=(Point const p2) {this->x -= p2.x; this->y -= p2.y; return *this;}
+	Point& operator*=(int 		   k) {this->x *= 	 k; this->y *=    k; return *this;}
+	Point& operator/=(int 		   k) {this->x /= 	 k; this->y /=    k; return *this;}
+	void pr() const {printf("(%d, %d)\n", this->x, this->y);}
 };
 
 // Point operator*(int const k, Point const p2) {return Point(k * p2.x, k * p2.y);}
@@ -25,23 +32,21 @@ using Vec2 = Point;
 
 int distance(Point const p1, Point const p2);
 
+using Set = uint32_t;
+using Path = uint64_t;
 
-class OptimalSet {
-public:
-	uint32_t elements;
+bool contains(Set s, int i);
+Set add(Set s, int i);
+Set remove(Set s, int i);
+int size(Set s);
+Set initSet(int i);
 
-	bool isInSet(int i) const;
-	void toggleFromSet(int i);
-	int countElements() const;
-};
+Set get_set(Path p);
+uint8_t get_point(Path p);
+Path path_from_point(uint8_t pt);
+Path constr(uint8_t pt, uint32_t set);
 
-class PartialPath {
-public:
-	uint8_t start_point;
-	OptimalSet point_set;
-	uint8_t point_count;
-};
+using PathTable = std::map<Path, int>;
+using TableIndex = std::pair<Path, int>;
 
-using DistTable = std::vector<PartialPath>;
-
-#endif /* TP2_POINT_H */
+#endif /* TP2_STRUCTURES_H */
