@@ -5,8 +5,8 @@
 #include <map>
 #include <vector>
 
-#define empty(s) (s.elements == 0)
 
+/* Common Structures */
 class Point {
 public:
 	int x,y;
@@ -27,12 +27,10 @@ public:
 	void pr() const {printf("(%d, %d)\n", this->x, this->y);}
 };
 
-// Point operator*(int const k, Point const p2) {return Point(k * p2.x, k * p2.y);}
-using Vec2 = Point;
-
 int distance(Point const p1, Point const p2);
 
-using Set = uint32_t;
+/* Dynamic Programming structures */
+using Set  = uint32_t;
 using Path = uint64_t;
 
 bool contains(Set s, int i);
@@ -48,5 +46,10 @@ Path constr(uint8_t pt, uint32_t set);
 
 using PathTable = std::map<Path, int>;
 using TableIndex = std::pair<Path, int>;
+
+
+/* Prim Structures */
+
+
 
 #endif /* TP2_STRUCTURES_H */

@@ -9,17 +9,16 @@ namespace algos {
 
     std::vector<int> greedy_TSP(std::vector<Point> p_list) {
         std::vector<int> result;
-        int Ncities = p_list.size();
-        std::vector<int> indexes(Ncities);
+        int N_cities = p_list.size();
+        std::vector<int> indexes(N_cities);
         std::iota(indexes.begin(), indexes.end(), 0);
 
-        int dist = 0;
         int idx = 0;
         Point city, next_city;
-        int mindist, next_idx = 0;
+        int min_dist, next_idx = 0;
         result.push_back(0);
-        for (int i = 0; i < Ncities-1; ++i) {
-            mindist = INT32_MAX;
+        for (int i = 0; i < N_cities-1; ++i) {
+            min_dist = INT32_MAX;
             city = p_list[idx];
             p_list.erase( (p_list.begin()  + idx));
             indexes.erase((indexes.begin() + idx));
@@ -27,10 +26,10 @@ namespace algos {
             int cnt = 0;
             for (Point c :p_list) {
                 // std::cout << "  distance: " << distance(c, city) << std::endl;
-                if (distance(c, city) <= mindist) {
+                if (distance(c, city) <= min_dist) {
                     next_idx = cnt;
                     next_city = c;
-                    mindist = distance(c, city);
+                    min_dist = distance(c, city);
                 }
                 cnt++;
             }
@@ -114,5 +113,16 @@ namespace algos {
         order.push_back(0);
         order.push_back(tot_dist);
         return order;
+    }
+
+    void prim_algo(std::vector<Point> p_list) {
+        auto h = p_list[0];
+        h.pr();
+    }
+
+    std::vector<int> approximative_TSP(std::vector<Point> p_list) {
+        auto h = p_list[0];
+        h.pr();
+        return std::vector<int>(0);
     }
 }
