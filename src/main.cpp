@@ -11,6 +11,7 @@
 
 #define USE_GREEDY
 // #define USE_DP
+#define USE_APPROX
 #define RENDERING
 
 int load_file(std::string const& filename, std::vector<Point>& p_list){
@@ -92,6 +93,8 @@ int main (){
 #endif // RENDERING
 #endif // USE_DP
 
+#ifdef USE_APPROX
 	algos::approximative_TSP(p_list);
+#endif // USE_APPROX
 	return 0;
 }
