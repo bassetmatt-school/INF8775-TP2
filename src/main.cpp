@@ -9,6 +9,10 @@
 #include "renderer.hpp"
 #include "algorithms.hpp"
 
+#define USE_GREEDY
+//#define USE_DP
+#define RENDERING
+
 int load_file(std::string const& filename, std::vector<Point>& p_list){
 	std::ifstream file_stream(filename);
 	if (!file_stream.is_open()) {
@@ -33,18 +37,24 @@ int main (){
 	std::vector<Point> p_list;
 	int N_cities;
 	/* File loading */
-	std::string file("../data/DP_N15_0");
+	std::string file("../data/N1000_0");
 	std::cout << "Loading file " << file << std::endl;
 	N_cities = load_file(file, p_list);
 	std::cout << "File loaded" << std::endl;
-	// renderer::init();
+
+	int dist;
+	std::vector<int> order;
+#ifdef RENDERING
+	renderer::init();
+#endif /* RENDERING */
+
 
 	/* Greedy TSP Application */
-	std::vector<int> order;
+#ifdef USE_GREEDY
 	order = algos::greedy_TSP(p_list);
 	// for (int x : order) {printf("%d|", x);}
 	// printf("\n");
-	int dist = 0;
+	dist = 0;
 	for (int i = 0; i < N_cities; ++i)
 		dist += distance(p_list[order[i]], p_list[order[i+1]]);
 
@@ -56,9 +66,15 @@ int main (){
 	// 	printf("Distance %d-%d : %d\n", p1, p2, d);
 	// }
 	std::cout << "Distance = " << dist << std::endl;
-	// renderer::displayTSP(p_list, order);
+
+#ifdef RENDERING
+	renderer::displayTSP(p_list, order);
+#endif /* RENDERING */
+#endif /* USE_GREEDY */
+
 
 	/* Dynamic programming application */
+#ifdef USE_DP
 	order = algos::dynamic_prog_TSP(p_list);
 	dist = order[order.size()-1];
 	order.pop_back();
@@ -71,6 +87,10 @@ int main (){
 	// 	printf("Distance %d-%d : %d\n", p1, p2, d);
 	// }
 	std::cout << "Distance = " << dist << std::endl;
-	// renderer::displayTSP(p_list, order);
+#ifdef RENDERING
+	renderer::displayTSP(p_list, order);
+#endif // RENDERING
+#endif // USE_DP
+
 	return 0;
 }
