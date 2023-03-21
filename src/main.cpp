@@ -10,7 +10,7 @@
 #include "algorithms.hpp"
 
 #define USE_GREEDY
-//#define USE_DP
+// #define USE_DP
 #define RENDERING
 
 int load_file(std::string const& filename, std::vector<Point>& p_list){
@@ -37,7 +37,7 @@ int main (){
 	std::vector<Point> p_list;
 	int N_cities;
 	/* File loading */
-	std::string file("../data/N1000_0");
+	std::string file("../data/DP_N15_0");
 	std::cout << "Loading file " << file << std::endl;
 	N_cities = load_file(file, p_list);
 	std::cout << "File loaded" << std::endl;
@@ -92,5 +92,6 @@ int main (){
 #endif // RENDERING
 #endif // USE_DP
 
+	algos::approximative_TSP(p_list);
 	return 0;
 }

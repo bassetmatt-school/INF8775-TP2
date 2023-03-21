@@ -49,7 +49,7 @@ using TableIndex = std::pair<Path, int>;
 
 
 /* Prim Structures */
-
+using edge = std::pair<uint, uint>;
 
 
 #endif /* TP2_STRUCTURES_H */

@@ -115,14 +115,45 @@ namespace algos {
         return order;
     }
 
-    void prim_algo(std::vector<Point> p_list) {
-        auto h = p_list[0];
-        h.pr();
+
+    std::vector<edge> prim_algo(std::vector<Point> p_list) {
+        int const N_cities = p_list.size();
+        std::vector<edge> edges;
+        std::vector<int> nearest_neighbor(N_cities);
+        std::vector<int> min_dist(N_cities);
+        for (int i = 1; i < N_cities; ++i) {
+            nearest_neighbor[i] = 0;
+            min_dist[i] = distance(p_list[0], p_list[i]);
+        }
+        for (int _ = 0; _ < N_cities-1; ++_) {
+            int min = INT32_MAX;
+            int k = 0;
+            for (int j = 1; j < N_cities; ++j) {
+                if (0 <= min_dist[j] && min_dist[j] < min) {
+                    min = min_dist[j];
+                    k = j;
+                }
+            }
+            edges.push_back(edge(k, nearest_neighbor[k]));
+            min_dist[k] = -1;
+            for (int j = 1; j < N_cities; ++j) {
+                int d = distance(p_list[k], p_list[j]);
+                if (d < min_dist[j]) {
+                    min_dist[j] = d;
+                    nearest_neighbor[j] = k;
+                }
+            }
+        }
+        return edges;
     }
 
     std::vector<int> approximative_TSP(std::vector<Point> p_list) {
-        auto h = p_list[0];
-        h.pr();
+        std::vector<edge> edges;
+        edges = prim_algo(p_list);
+        int i = 0;
+        for (edge e: edges) {
+            printf("Edge %d, (%d - %d)\n", ++i, e.first, e.second);
+        }
         return std::vector<int>(0);
     }
 }
