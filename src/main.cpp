@@ -1,18 +1,20 @@
+#include <cassert>
 #include <cmath>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <numeric>
 #include <string>
 #include <vector>
-#include <SDL2/SDL.h>
 #include "structures.hpp"
-#include "renderer.hpp"
 #include "algorithms.hpp"
 
-#define USE_GREEDY
-#define USE_DP
-#define USE_APPROX
-// #define RENDERING
+
+enum Algos{
+	GREEDY,
+	DP,
+	APPROX,
+};
 
 int load_file(std::string const& filename, std::vector<Point>& p_list){
 	std::ifstream file_stream(filename);
@@ -34,73 +36,76 @@ int load_file(std::string const& filename, std::vector<Point>& p_list){
 	return N;
 }
 
-int main (){
-	std::vector<Point> p_list;
-	int N_cities;
-	/* File loading */
-	std::string file("../data/DP_N15_0");
-	std::cout << "Loading file " << file << std::endl;
-	N_cities = load_file(file, p_list);
-	std::cout << "File loaded" << std::endl;
+void sort_order(std::vector<int>& order){
+	int size = order.size();
+	if (order[1] < order[size - 2]) return;
+	std::vector<int> tmp(order);
+	for (int i = 1; i < size - 1; ++i){
+		order[i] = tmp[size - i - 1];
+	}
+}
 
-	int dist;
+int main (int argc, char* argv[]){
+	bool print = false, time = false;
+	int algo = 0;
+	std::string file;
+	switch (argc) {
+		case 1: file = "../data/N1000_0"; break;
+		case 5:
+			file  = argv[1];
+			algo  = *argv[2] - 48;
+			print = *argv[3] - 48;
+			time  = *argv[4] - 48;
+		break;
+		default: exit(1); break;
+	}
+	// printf("File : %s\nAlgo : %d\nPrint: %d\nTime: %d\n", file.c_str(), algo, print, time);
+
+	std::vector<Point> city_list;
+	int N_cities = load_file(file, city_list);
+	assert(N_cities > 0);
+
+	/* Shared variables for algorithms */
+	int dist = 0;
 	std::vector<int> order;
-#ifdef RENDERING
-	renderer::init();
-#endif /* RENDERING */
+	clock_t t1=0, t2=0;
+	double time_diff;
 
+	switch (algo) {
+		/* Greedy TSP Application */
+		case GREEDY:
+			t1 = clock();
+			order = algos::greedy_TSP(city_list);
+			t2 = clock();
+			for (int i = 0; i < N_cities; ++i)
+				dist += distance(city_list[order[i]], city_list[order[i+1]]);
+		break;
+		/* Dynamic programming application */
+		case DP:
+			t1 = clock();
+			order = algos::dynamic_prog_TSP(city_list);
+			t2 = clock();
+			dist = order[order.size()-1];
+			order.pop_back();
+		break;
+		/* Approximate algorithm application */
+		case APPROX:
+			t1 = clock();
+			order = algos::approximative_TSP(city_list);
+			t2 = clock();
+			for (int i = 0; i < N_cities; ++i)
+				dist += distance(city_list[order[i]], city_list[order[i+1]]);
+		default:
+		break;
+	}
 
-	/* Greedy TSP Application */
-#ifdef USE_GREEDY
-	order = algos::greedy_TSP(p_list);
-	// for (int x : order) {printf("%d|", x);}
-	// printf("\n");
-	dist = 0;
-	for (int i = 0; i < N_cities; ++i)
-		dist += distance(p_list[order[i]], p_list[order[i+1]]);
+	time_diff = ((double) t2 - t1) / CLOCKS_PER_SEC;
+	if (time) printf("%f\n", time_diff * 1000);
+	if (print) {
+		sort_order(order);
+		for (int x: order) {printf("%d\n", x);}
+	}
+	// printf("Distance = %d\n", dist);
 
-	// for (int i = 0; i < order.size() - 1; ++i) {
-	// 	int p1 = order[i];
-	// 	int p2 = order[i+1];
-	// 	int d = distance(p_list[p1], p_list[p2]);
-	// 	dist += d;
-	// 	printf("Distance %d-%d : %d\n", p1, p2, d);
-	// }
-	std::cout << "Distance = " << dist << std::endl;
-
-#ifdef RENDERING
-	renderer::displayTSP(p_list, order);
-#endif /* RENDERING */
-#endif /* USE_GREEDY */
-
-
-	/* Dynamic programming application */
-#ifdef USE_DP
-	order = algos::dynamic_prog_TSP(p_list);
-	dist = order[order.size()-1];
-	order.pop_back();
-	// for (int x : order) {printf("%d|", x);}
-	// printf("\n");
-	// 	for (int i = 0; i < order.size() - 1; ++i) {
-	// 	int p1 = order[i];
-	// 	int p2 = order[i+1];
-	// 	int d = distance(p_list[p1], p_list[p2]);
-	// 	printf("Distance %d-%d : %d\n", p1, p2, d);
-	// }
-	std::cout << "Distance = " << dist << std::endl;
-#ifdef RENDERING
-	renderer::displayTSP(p_list, order);
-#endif // RENDERING
-#endif // USE_DP
-
-#ifdef USE_APPROX
-	order = algos::approximative_TSP(p_list);
-	// for (int x : order) {printf("%d|", x);}
-	// printf("\n");
-	dist = 0;
-	for (int i = 0; i < N_cities; ++i)
-		dist += distance(p_list[order[i]], p_list[order[i+1]]);
-	std::cout << "Distance = " << dist << std::endl;
-#endif // USE_APPROX
 	return 0;
 }
