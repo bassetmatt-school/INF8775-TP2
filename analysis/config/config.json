@@ -1,0 +1,16 @@
+{
+    "path" : "res/",
+    "estim_color" : "#A36AC7",
+    "Greedy" : {
+        "color" : "#3971ED",
+        "power" : 2.0
+    },
+    "Approximative" : {
+        "color" : "#198844",
+        "power" : 2.0
+    },
+    "Dynamic Programming" : {
+        "color" : "#CC342B",
+        "power" : 2.807354922057604
+    }
+}
