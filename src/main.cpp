@@ -71,6 +71,7 @@ int main (int argc, char* argv[]){
 		for (int x: order) {printf("%d\n", x);}
 	}
 	// printf("Distance = %d\n", dist);
+	// printf("%d\n", dist);
 
 	return 0;
 }

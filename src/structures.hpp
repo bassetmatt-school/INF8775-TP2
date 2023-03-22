@@ -30,7 +30,13 @@ public:
 int distance(Point const p1, Point const p2);
 
 /* Dynamic Programming structures */
+/* A set is an integer whose bits of weight i
+ * denote the appartenance of the i-th element
+ * to the set*/
 using Set  = uint32_t;
+/* A path is the pair of a et and a point
+ * The lower half of the integer is the set
+ * The higher is the point */
 using Path = uint64_t;
 
 bool contains(Set s, int i);
