@@ -4,7 +4,9 @@
 bin
 [bB]uild
 
-data
+data/*
+!data/gen.sh
+!data/inst_gen.py
 *.docx
 
 # Byte-compiled / optimized / DLL files
