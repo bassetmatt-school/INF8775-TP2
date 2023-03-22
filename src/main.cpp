@@ -1,54 +1,19 @@
 #include <cassert>
 #include <cmath>
 #include <ctime>
-#include <fstream>
 #include <iostream>
 #include <numeric>
 #include <string>
 #include <vector>
 #include "structures.hpp"
 #include "algorithms.hpp"
+#include "utils.hpp"
 
-
-enum Algos{
-	GREEDY,
-	DP,
-	APPROX,
-};
-
-int load_file(std::string const& filename, std::vector<Point>& p_list){
-	std::ifstream file_stream(filename);
-	if (!file_stream.is_open()) {
-		std::cout << "Couldn't open file\n";
-		return -1;
-	}
-
-	int N;
-	file_stream >> N;
-	p_list.reserve(N);
-	while (file_stream) {
-		int x, y;
-		file_stream >> x >> y;
-		p_list.push_back(Point(x, y));
-	}
-	p_list.pop_back();
-	file_stream.close();
-	return N;
-}
-
-void sort_order(std::vector<int>& order){
-	int size = order.size();
-	if (order[1] < order[size - 2]) return;
-	std::vector<int> tmp(order);
-	for (int i = 1; i < size - 1; ++i){
-		order[i] = tmp[size - i - 1];
-	}
-}
 
 int main (int argc, char* argv[]){
 	bool print = false, time = false;
 	int algo = 0;
-	std::string file;
+	std::string file= "../data/N1000_0";
 	switch (argc) {
 		case 1: file = "../data/N1000_0"; break;
 		case 5:

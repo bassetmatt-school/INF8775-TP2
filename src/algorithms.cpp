@@ -119,8 +119,8 @@ namespace algos {
     std::vector<edge> prim_algo(std::vector<Point> p_list) {
         int const N_cities = p_list.size();
         std::vector<edge> edges;
-        std::vector<int> nearest_neighbor(N_cities);
-        std::vector<int> min_dist(N_cities);
+        std::vector<long int> nearest_neighbor(N_cities);
+        std::vector<long int> min_dist(N_cities);
         for (int i = 1; i < N_cities; ++i) {
             nearest_neighbor[i] = 0;
             min_dist[i] = distance(p_list[0], p_list[i]);
@@ -138,7 +138,7 @@ namespace algos {
             min_dist[k] = -1;
             for (int j = 1; j < N_cities; ++j) {
                 int d = distance(p_list[k], p_list[j]);
-                if (d < min_dist[j]) {
+                if (d <= min_dist[j]) {
                     min_dist[j] = d;
                     nearest_neighbor[j] = k;
                 }
@@ -156,7 +156,6 @@ namespace algos {
 
     std::vector<int> approximative_TSP(std::vector<Point> p_list) {
         std::vector<edge> edges = prim_algo(p_list);
-
         Node tree(0, std::vector<Node*>());
         build_tree(edges, tree);
 

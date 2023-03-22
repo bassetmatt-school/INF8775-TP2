@@ -26,8 +26,8 @@ help_function() {
 # Compilation
 unset COMP SRC_FILES INC_FILES CPP_FLAGS CPP_STD OUT_FILE
 COMP=g++
-SRC_FILES="src/main.cpp src/algorithms.cpp src/structures.cpp"
-INC_FILES="src/structures.hpp src/algorithms.hpp"
+SRC_FILES="src/main.cpp src/algorithms.cpp src/structures.cpp src/utils.cpp"
+INC_FILES="src/structures.hpp src/algorithms.hpp src/utils.hpp"
 CPP_FLAGS="-O3 -Wall -Wextra -pedantic"
 CPP_STD="c++20"
 OUT_FILE="./bin/tp2"
